@@ -8,7 +8,31 @@ output:
 ---
 
 
+```{r}
+library(tidyverse)
+```
+
 
 ## Project thoughts
 
 I am interested in exploring data related to how socioeconomic trends and whether a state is typically red or blue impacts the quality and satisfaction patients have with their healthcare. Leadership and public opinion heavily influence the healthcare policy enforced in each state especially when it comes to public health and medicaid/medicare coverage. Is there a correlation between the type of demographic each state has, the party governors and other politicians identify with, and specific economic factors that determine quality of healthcare?
+
+
+
+## Data 
+
+```{r}
+healthcare_quality <- read_csv("healthcare_quality.csv")
+head(healthcare_quality)
+
+state_dem_ind <- read_csv("State_Dem_Index.csv")
+head(state_dem_ind)
+```
+
+
+## Revised Research Proposal
+
+I have chosen two data sets, each ranking specific characteristics of states within the US. The first data set, health_quality looks at how specific state health care programs for low income families qualitatively performs compared to other states. The data on quality of health care delivered by each state is drawn from ratings of Medicaid and the Children's Health Insurance Program (CHIP). I plan to combine this information with my second dataset, the state_dem_inx which measures the State Democracy Index from 2000 to 2023. This data looks into each states democratic performance quantitatively. Using these two data sets I aim to determine whether a states democratic performance is a determinant in healthcare quality. I believe that states with a lower democracy index, or in other words states that display greater democratic backsliding, are more likely to have worse healthcare quality on average. This hypothesis stems from the belief that political systems which lack proper democratic procedures are less likely to consider the needs of citizens and allocate funding and resources accordingly. Therefore, my explanatory variable will be the State Democracy Index value of each state, as this is what I believe may influence healthcare quality. Therefore, my outcome variable will be the average healthcare quality rating of each state. To determine whether or not my hypothesis is correct, I will have to find the most relevant average healthcare ratings for each state and compare it to the most recent data of the state democracy index value (data from 2023) for each state. If states with lower index values tend to have lower healthcare quality ratings, this would affirm my hypothesis. If however, states with lower democratic index have higher healthcare ratings on average, this would disprove my theory. 
+
+
+* side note: I am still deciding which characteristics I want to take average rating of from each state in terms of qualitative healthcare quality measurements. Because there are so many different measurements, I will take the average rating of only a few of the most important domains from the healthcare quality data for the purposes of this research.

@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["healthcare_quality.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","SDI_2.0.numbers","State_Dem_Index.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1544,9 +1544,56 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
 <h2 id="project-thoughts">Project thoughts</h2>
 <p>I am interested in exploring data related to how socioeconomic trends and whether a state is typically red or blue impacts the quality and satisfaction patients have with their healthcare. Leadership and public opinion heavily influence the healthcare policy enforced in each state especially when it comes to public health and medicaid/medicare coverage. Is there a correlation between the type of demographic each state has, the party governors and other politicians identify with, and specific economic factors that determine quality of healthcare?</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="data">Data</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>healthcare_quality</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"healthcare_quality.csv"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>healthcare_quality</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 20
+  State   Domain                 `Reporting Program` `Measure Name`   
+  &lt;chr&gt;   &lt;chr&gt;                  &lt;chr&gt;               &lt;chr&gt;            
+1 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+2 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+3 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+4 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+5 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+6 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+# ℹ 16 more variables: `Measure Abbreviation` &lt;chr&gt;,
+#   `Measure Type` &lt;chr&gt;, `Rate Definition` &lt;chr&gt;,
+#   `Core Set Year` &lt;dbl&gt;, Population &lt;chr&gt;, Methodology &lt;chr&gt;,
+#   `State Rate` &lt;chr&gt;, `Number of States Reporting` &lt;dbl&gt;,
+#   Mean &lt;dbl&gt;, Median &lt;dbl&gt;, `Bottom Quartile` &lt;dbl&gt;,
+#   `Top Quartile` &lt;dbl&gt;, Notes &lt;chr&gt;, Source &lt;chr&gt;,
+#   `State-Specific Comments` &lt;chr&gt;, …</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>state_dem_ind</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"State_Dem_Index.csv"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>state_dem_ind</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 7
+  st    state  year democracy_mcmc democracy_mcmc_sd democracy_mcmc_se
+  &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;          &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+1 AL    Alab…  2023          -2.27             0.287           0.00287
+2 AL    Alab…  2022          -2.26             0.287           0.00287
+3 AL    Alab…  2021          -2.58             0.288           0.00288
+4 AL    Alab…  2020          -2.58             0.290           0.00290
+5 AL    Alab…  2019          -2.62             0.290           0.00290
+6 AL    Alab…  2018          -2.63             0.288           0.00288
+# ℹ 1 more variable: democracy_additive &lt;dbl&gt;</code></pre>
+</div>
+<h2 id="revised-research-proposal">Revised Research Proposal</h2>
+<p>I have chosen two data sets, each ranking specific characteristics of states within the US. The first data set, health_quality looks at how specific state health care programs for low income families qualitatively performs compared to other states. The data on quality of health care delivered by each state is drawn from ratings of Medicaid and the Children’s Health Insurance Program (CHIP). I plan to combine this information with my second dataset, the state_dem_inx which measures the State Democracy Index from 2000 to 2023. This data looks into each states democratic performance quantitatively. Using these two data sets I aim to determine whether a states democratic performance is a determinant in healthcare quality. I believe that states with a lower democracy index, or in other words states that display greater democratic backsliding, are more likely to have worse healthcare quality on average. This hypothesis stems from the belief that political systems which lack proper democratic procedures are less likely to consider the needs of citizens and allocate funding and resources accordingly. Therefore, my explanatory variable will be the State Democracy Index value of each state, as this is what I believe may influence healthcare quality. Therefore, my outcome variable will be the average healthcare quality rating of each state. To determine whether or not my hypothesis is correct, I will have to find the most relevant average healthcare ratings for each state and compare it to the most recent data of the state democracy index value (data from 2023) for each state. If states with lower index values tend to have lower healthcare quality ratings, this would affirm my hypothesis. If however, states with lower democratic index have higher healthcare ratings on average, this would disprove my theory.</p>
+<ul>
+<li>side note: I am still deciding which characteristics I want to take average rating of from each state in terms of qualitative healthcare quality measurements. Because there are so many different measurements, I will take the average rating of only a few of the most important domains from the healthcare quality data for the purposes of this research.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
