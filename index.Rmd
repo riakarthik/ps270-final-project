@@ -18,12 +18,11 @@ library(tidyverse)
 I am interested in exploring data related to how socioeconomic trends and whether a state is typically red or blue impacts the quality and satisfaction patients have with their healthcare. Leadership and public opinion heavily influence the healthcare policy enforced in each state especially when it comes to public health and medicaid/medicare coverage. Is there a correlation between the type of demographic each state has, the party governors and other politicians identify with, and specific economic factors that determine quality of healthcare?
 
 
-
 ## Data 
 
 ```{r}
 healthcare_quality <- read_csv("healthcare_quality.csv")
-head(healthcare_quality)
+healthcare_quality
 
 state_dem_ind <- read_csv("State_Dem_Index.csv")
 head(state_dem_ind)
@@ -36,3 +35,40 @@ I have chosen two data sets, each ranking specific characteristics of states wit
 
 
 * side note: I am still deciding which characteristics I want to take average rating of from each state in terms of qualitative healthcare quality measurements. Because there are so many different measurements, I will take the average rating of only a few of the most important domains from the healthcare quality data for the purposes of this research.
+
+
+##  Data Visualization 
+
+```{r}
+clean_df <- healthcare_quality |>
+  filter(Population == "Medicaid", 
+         Domain == "Experience of Care", 
+         `Reporting Program` != "Child Core Set", 
+         `Rate Definition` == "Percentage who Selected They \"Always\" Got Needed Care, on a Four-Point Scale Ranging from \"Never\" to \"Always\": Age 18 and Older") |>
+  select(c("State", "Domain", "Measure Name",  "Population", "Rate Definition", "State Rate")) |>
+  mutate(`State Rate` = suppressWarnings( as.numeric(`State Rate`)))
+```
+
+```{r}
+glimpse(clean_df)
+```
+
+```{r}
+clean_df <- clean_df |>
+  arrange(State) |>
+  mutate(Group = if_else(row_number() <= n()/2, "Group 1 (States A-M)", "Group 2 (States N-W)")) 
+
+
+ggplot(data = clean_df, 
+       mapping = aes(x = State, 
+                     y = `State Rate`)) +
+       geom_col() + 
+  facet_wrap(~Group, scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))
+```
+
+The visual above shows overall state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of "Never" to "Always". The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Using this we can go on to further analyze if states that are more democratic on the democratic index have higher or lower ratings regarding experience of care through Medicaid. 
+
+```{r}
+"git push"
+```

@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["healthcare_quality.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","SDI_2.0.numbers","State_Dem_Index.csv"]}
+  {"type":"character","attributes":{},"value":["healthcare_quality.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","SDI_2.0.numbers","State_Dem_Index.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1555,24 +1555,28 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>healthcare_quality</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"healthcare_quality.csv"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>healthcare_quality</span><span class='op'>)</span></span></code></pre>
+<span><span class='va'>healthcare_quality</span></span></code></pre>
 </div>
-<pre><code># A tibble: 6 × 20
-  State   Domain                 `Reporting Program` `Measure Name`   
-  &lt;chr&gt;   &lt;chr&gt;                  &lt;chr&gt;               &lt;chr&gt;            
-1 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
-2 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
-3 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
-4 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
-5 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
-6 Alabama Behavioral Health Care Child Core Set      Follow-Up After …
+<pre><code># A tibble: 11,100 × 20
+   State   Domain                 `Reporting Program` `Measure Name`  
+   &lt;chr&gt;   &lt;chr&gt;                  &lt;chr&gt;               &lt;chr&gt;           
+ 1 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 2 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 3 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 4 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 5 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 6 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 7 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 8 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+ 9 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+10 Alabama Behavioral Health Care Child Core Set      Follow-Up After…
+# ℹ 11,090 more rows
 # ℹ 16 more variables: `Measure Abbreviation` &lt;chr&gt;,
 #   `Measure Type` &lt;chr&gt;, `Rate Definition` &lt;chr&gt;,
 #   `Core Set Year` &lt;dbl&gt;, Population &lt;chr&gt;, Methodology &lt;chr&gt;,
 #   `State Rate` &lt;chr&gt;, `Number of States Reporting` &lt;dbl&gt;,
 #   Mean &lt;dbl&gt;, Median &lt;dbl&gt;, `Bottom Quartile` &lt;dbl&gt;,
-#   `Top Quartile` &lt;dbl&gt;, Notes &lt;chr&gt;, Source &lt;chr&gt;,
-#   `State-Specific Comments` &lt;chr&gt;, …</code></pre>
+#   `Top Quartile` &lt;dbl&gt;, Notes &lt;chr&gt;, Source &lt;chr&gt;, …</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>state_dem_ind</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"State_Dem_Index.csv"</span><span class='op'>)</span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>state_dem_ind</span><span class='op'>)</span></span></code></pre>
@@ -1593,7 +1597,49 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <ul>
 <li>side note: I am still deciding which characteristics I want to take average rating of from each state in terms of qualitative healthcare quality measurements. Because there are so many different measurements, I will take the average rating of only a few of the most important domains from the healthcare quality data for the purposes of this research.</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="data-visualization">Data Visualization</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>clean_df</span> <span class='op'>&lt;-</span> <span class='va'>healthcare_quality</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Population</span> <span class='op'>==</span> <span class='st'>"Medicaid"</span>, </span>
+<span>         <span class='va'>Domain</span> <span class='op'>==</span> <span class='st'>"Experience of Care"</span>, </span>
+<span>         <span class='va'>`Reporting Program`</span> <span class='op'>!=</span> <span class='st'>"Child Core Set"</span>, </span>
+<span>         <span class='va'>`Rate Definition`</span> <span class='op'>==</span> <span class='st'>"Percentage who Selected They \"Always\" Got Needed Care, on a Four-Point Scale Ranging from \"Never\" to \"Always\": Age 18 and Older"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"State"</span>, <span class='st'>"Domain"</span>, <span class='st'>"Measure Name"</span>,  <span class='st'>"Population"</span>, <span class='st'>"Rate Definition"</span>, <span class='st'>"State Rate"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`State Rate` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://pillar.r-lib.org/reference/glimpse.html'>glimpse</a></span><span class='op'>(</span><span class='va'>clean_df</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Rows: 47
+Columns: 6
+$ State             &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arkansas&quot;, &quot;Californ…
+$ Domain            &lt;chr&gt; &quot;Experience of Care&quot;, &quot;Experience of Care&quot;…
+$ `Measure Name`    &lt;chr&gt; &quot;CAHPS Health Plan Survey 5.1H, Adult Vers…
+$ Population        &lt;chr&gt; &quot;Medicaid&quot;, &quot;Medicaid&quot;, &quot;Medicaid&quot;, &quot;Medic…
+$ `Rate Definition` &lt;chr&gt; &quot;Percentage who Selected They \&quot;Always\&quot; G…
+$ `State Rate`      &lt;dbl&gt; 56.1, 48.1, 53.3, 40.8, 46.5, 48.9, 50.6, …</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>clean_df</span> <span class='op'>&lt;-</span> <span class='va'>clean_df</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>State</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Group <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/row_number.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span>, <span class='st'>"Group 1 (States A-M)"</span>, <span class='st'>"Group 2 (States N-W)"</span><span class='op'>)</span><span class='op'>)</span> </span>
+<span></span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>clean_df</span>, </span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, </span>
+<span>                     y <span class='op'>=</span> <span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>       <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>Group</span>, scales <span class='op'>=</span> <span class='st'>"free_x"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>50</span>, hjust <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
+</div>
+<p>The visual above shows overall state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of “Never” to “Always”. The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Using this we can go on to further analyze if states that are more democratic on the democratic index have higher or lower ratings regarding experience of care through Medicaid.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
