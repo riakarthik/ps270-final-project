@@ -1546,7 +1546,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="d-article">
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <h2 id="project-thoughts">Project thoughts</h2>
@@ -1578,29 +1579,34 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 #   Mean &lt;dbl&gt;, Median &lt;dbl&gt;, `Bottom Quartile` &lt;dbl&gt;,
 #   `Top Quartile` &lt;dbl&gt;, Notes &lt;chr&gt;, Source &lt;chr&gt;, …</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>state_dem_ind</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"State_Dem_Index.csv"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>state_dem_ind</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>state_dem_ind</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"State_Dem_Index.csv"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>State <span class='op'>=</span> <span class='va'>state</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>State</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_democracy_score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>democracy_mcmc</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>state_dem_ind</span></span></code></pre>
 </div>
-<pre><code># A tibble: 6 × 7
-  st    state  year democracy_mcmc democracy_mcmc_sd democracy_mcmc_se
-  &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;          &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
-1 AL    Alab…  2023          -2.27             0.287           0.00287
-2 AL    Alab…  2022          -2.26             0.287           0.00287
-3 AL    Alab…  2021          -2.58             0.288           0.00288
-4 AL    Alab…  2020          -2.58             0.290           0.00290
-5 AL    Alab…  2019          -2.62             0.290           0.00290
-6 AL    Alab…  2018          -2.63             0.288           0.00288
-# ℹ 1 more variable: democracy_additive &lt;dbl&gt;</code></pre>
+<pre><code># A tibble: 50 × 2
+   State       mean_democracy_score
+   &lt;chr&gt;                      &lt;dbl&gt;
+ 1 Alabama                   -1.55 
+ 2 Alaska                     0.247
+ 3 Arizona                    0.269
+ 4 Arkansas                  -0.602
+ 5 California                 0.696
+ 6 Colorado                   1.13 
+ 7 Connecticut                0.409
+ 8 Delaware                   0.144
+ 9 Florida                   -1.00 
+10 Georgia                   -1.31 
+# ℹ 40 more rows</code></pre>
 </div>
-<h2 id="revised-research-proposal">Revised Research Proposal</h2>
-<p>I have chosen two data sets, each ranking specific characteristics of states within the US. The first data set, health_quality looks at how specific state health care programs for low income families qualitatively performs compared to other states. The data on quality of health care delivered by each state is drawn from ratings of Medicaid and the Children’s Health Insurance Program (CHIP). I plan to combine this information with my second dataset, the state_dem_inx which measures the State Democracy Index from 2000 to 2023. This data looks into each states democratic performance quantitatively. Using these two data sets I aim to determine whether a states democratic performance is a determinant in healthcare quality. I believe that states with a lower democracy index, or in other words states that display greater democratic backsliding, are more likely to have worse healthcare quality on average. This hypothesis stems from the belief that political systems which lack proper democratic procedures are less likely to consider the needs of citizens and allocate funding and resources accordingly. Therefore, my explanatory variable will be the State Democracy Index value of each state, as this is what I believe may influence healthcare quality. Therefore, my outcome variable will be the average healthcare quality rating of each state. To determine whether or not my hypothesis is correct, I will have to find the most relevant average healthcare ratings for each state and compare it to the most recent data of the state democracy index value (data from 2023) for each state. If states with lower index values tend to have lower healthcare quality ratings, this would affirm my hypothesis. If however, states with lower democratic index have higher healthcare ratings on average, this would disprove my theory.</p>
-<ul>
-<li>side note: I am still deciding which characteristics I want to take average rating of from each state in terms of qualitative healthcare quality measurements. Because there are so many different measurements, I will take the average rating of only a few of the most important domains from the healthcare quality data for the purposes of this research.</li>
-</ul>
+<h2 id="research-proposal">Research Proposal</h2>
+<p>I have chosen two data sets, each ranking specific characteristics of states within the US. The first data set, health_quality looks at how specific state health care programs for low income families qualitatively performs compared to other states. The data on quality of health care delivered by each state is drawn from ratings of Medicaid and the Children’s Health Insurance Program (CHIP). I plan to combine this information with my second dataset, the state_dem_inx which measures the State Democracy Index from 2000 to 2023. This data looks into each states democratic performance quantitatively. I will be using the democracy_mcmc scores, to determined the average Electoral Democracy Scores over the years the study was conducted. Using these two data sets I aim to determine whether a states democratic performance is a determinant in healthcare quality. I believe that states with a lower democracy index, or in other words states that display greater democratic backsliding, are more likely to have worse healthcare quality on average.This hypothesis stems from the belief that political systems which lack proper democratic procedures are less likely to consider the needs of citizens and allocate funding and resources accordingly. Therefore, my explanatory variable will be the Electoral Democracy Score value of each state, as this is what I believe may influence healthcare quality. Therefore, my outcome variable will be the average publicly funded healthcare quality rating of each state. To determine whether or not my hypothesis is correct, I will have to find the most relevant average publicly funded healthcare ratings for each state and compare it to the average state democracy index values (Electoral Democracy Scores) for each state. If states with lower index values tend to have lower healthcare quality ratings, this would affirm my hypothesis. If however, states with lower democratic index have higher healthcare ratings on average, this would disprove my theory.</p>
 <h2 id="data-visualization">Data Visualization</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>clean_df</span> <span class='op'>&lt;-</span> <span class='va'>healthcare_quality</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>clean_healthcare_df</span> <span class='op'>&lt;-</span> <span class='va'>healthcare_quality</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Population</span> <span class='op'>==</span> <span class='st'>"Medicaid"</span>, </span>
 <span>         <span class='va'>Domain</span> <span class='op'>==</span> <span class='st'>"Experience of Care"</span>, </span>
 <span>         <span class='va'>`Reporting Program`</span> <span class='op'>!=</span> <span class='st'>"Child Core Set"</span>, </span>
@@ -1611,7 +1617,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://pillar.r-lib.org/reference/glimpse.html'>glimpse</a></span><span class='op'>(</span><span class='va'>clean_df</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://pillar.r-lib.org/reference/glimpse.html'>glimpse</a></span><span class='op'>(</span><span class='va'>clean_healthcare_df</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>Rows: 47
 Columns: 6
@@ -1624,22 +1630,75 @@ $ `State Rate`      &lt;dbl&gt; 56.1, 48.1, 53.3, 40.8, 46.5, 48.9, 50.6, …</c
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>clean_df</span> <span class='op'>&lt;-</span> <span class='va'>clean_df</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>clean_healthcare_df</span> <span class='op'>&lt;-</span> <span class='va'>clean_healthcare_df</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>State</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Group <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/row_number.html'>row_number</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&lt;=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span>, <span class='st'>"Group 1"</span>, <span class='st'>"Group 2"</span><span class='op'>)</span><span class='op'>)</span> </span>
 <span></span>
 <span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>clean_df</span>, </span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>clean_healthcare_df</span>, </span>
 <span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, </span>
 <span>                     y <span class='op'>=</span> <span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>       <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>Group</span>, scales <span class='op'>=</span> <span class='st'>"free_x"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>50</span>, hjust <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>50</span>, hjust <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Rating in each State for Patients 18 or Older under Medicaid on Whether They Receieved the Care They Needed"</span>, caption <span class='op'>=</span> <span class='st'>"Groups are split alphabetically: Group 1 contains the State Ratings for States A-M, and Group 2 contains States N-W."</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
 </div>
 <p>The visual above shows overall state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of “Never” to “Always”. The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Using this we can go on to further analyze if states that are more democratic on the democratic index have higher or lower ratings regarding experience of care through Medicaid.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h3 id="may-change-the-graphs-to-be-from-least-to-most-votes">May change the graphs to be from least to most votes</h3>
+<h2 id="linear-regression-milestone-4">Linear Regression (Milestone 4)</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>combined_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>clean_healthcare_df</span>, <span class='va'>state_dem_ind</span>, by <span class='op'>=</span> <span class='st'>"State"</span><span class='op'>)</span></span>
+<span><span class='va'>combined_df</span></span></code></pre>
+</div>
+<pre><code># A tibble: 47 × 8
+   State         Domain    `Measure Name` Population `Rate Definition`
+   &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;            
+ 1 Alabama       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 2 Alaska        Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 3 Arkansas      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 4 California    Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 5 Colorado      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 6 Connecticut   Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 7 Delaware      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 8 Dist. of Col. Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 9 Florida       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+10 Georgia       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+# ℹ 37 more rows
+# ℹ 3 more variables: `State Rate` &lt;dbl&gt;, Group &lt;chr&gt;,
+#   mean_democracy_score &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>combined_df_lm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>`State Rate`</span> <span class='op'>~</span> <span class='va'>mean_democracy_score</span>, data <span class='op'>=</span> <span class='va'>combined_df</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>estimate</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='va'>combined_df_lm</span></span></code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">52.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mean_democracy_score</td>
+<td style="text-align: right;">-4.25</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The data used in this linear regression was a combined data set, containing the State Rankings of quality of care (more specifically whether patients received the treatment they felt they needed on a four-point scale from “Always” to “Never”) from patients above the age of 18 under Medicaid, and data on the mean Electoral Democracy Scores for each state extracted from the State Democracy Index study. Through a linear regression, I aim to understand whether the level of electoral democracy were correlated with higher approval ratings for public healthcare recipients. Based on the table above, there seems to be a negative association between ratings for health care provided to adults through Medicaid and the mean Electoral Democracy Scores. For every point increase in electoral democracy scores (moving 1 point towards a healthier democracy), the approval ratings for patients above the age of 18 under Medicaid go down by 4.25. The intercept value indicates that when the mean score of Electoral Democracy is 0 meaning it is not considered a health or unhealthy democracy, that approval ratings were 52.16.</p>
+<p>Based on this information, I believe that the association between the quality of publicly funded healthcare scores, and electoral democracy scores disprove my hypothesis that states with healthier democracies will have higher approval ratings for publicly funded medical programs.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
