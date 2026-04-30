@@ -13,18 +13,16 @@ library(tidyverse)
 library(broom)
 ```
 
-<style>
-p {
-  text-indent: 2em;
-}
-</style>
 
 ## Introduction
 
-I chose to study whether there is an association between the health of an American State's democracy and the satisfaction of patients receiving government funded public healthcare. For the purposes of this study, I focused on comparing State Democratic Index values and survey responses from adult patients receiving healthcare through Medicare. I believe that states with a lower democracy index, in other words states that are less healthy and display greater democratic backsliding, are more likely to have lower satisfaction ratings from Medicare patients on average.This hypothesis stems from the belief that political systems which lack proper democratic procedures are less likely to consider the needs of citizens and allocate funding and resources accordingly. This topic is especially important due to the increasing political polarization of the United States. 
+I chose to study whether there is an association between the health of each US states' democracy and the satisfaction of patients receiving government funded public healthcare. For the purposes of this study, I focused on comparing State Democratic Index values, and survey responses inquiring about satisfaction of care from adult patients receiving healthcare through Medicare. I hypothesize that states with a lower democracy index are more likely to have lower satisfaction ratings from Medicare patients on average. This hypothesis stems from the belief that political systems which lack proper democratic procedures are less likely to consider the needs of citizens and allocate funding and resources accordingly. This topic is especially important due to the increasing political polarization of the United States, given that historical increases in political polarization are often associated with greater democratic backsliding. Therefore, I believe it is important to study whether this backsliding and declining health of democracy in US states is affecting the quality of healthcare US citizens receive.  
 
 ## Data 
 
+
+
+I have chosen two data sets, each ranking specific characteristics of states within the US. The first data set, health_quality looks at how specific state health care programs for low income families qualitatively performs compared to other states. The data on quality of health care delivered by each state is drawn from ratings of Medicaid and the Children's Health Insurance Program (CHIP). I plan to combine this information with my second dataset, the state_dem_inx which measures the State Democracy Index from 2000 to 2023. This data looks into each states democratic performance quantitatively. I will be using the democracy_mcmc scores, to determined the average Electoral Democracy Scores over the years the study was conducted. Using these two data sets I aim to determine whether a states democratic performance is a determinant in healthcare quality.Therefore, my explanatory variable will be the Electoral Democracy Score value of each state, as this is what I believe may influence healthcare quality. Therefore, my outcome variable will be the average publicly funded healthcare quality rating of each state. To determine whether or not my hypothesis is correct, I will have to find the most relevant average publicly funded healthcare ratings for each state and compare it to the average state democracy index values (Electoral Democracy Scores) for each state. If states with lower index values tend to have lower healthcare quality ratings, this would affirm my hypothesis. If however, states with lower democratic index have higher healthcare ratings on average, this would disprove my theory. 
 ```{r, include = FALSE}
 healthcare_quality <- read_csv("healthcare_quality.csv")
 healthcare_quality
@@ -64,43 +62,42 @@ ggplot(data = clean_healthcare_df,
        geom_col() + 
   # facet_wrap(~Group, scales = "free_x") +
   theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
-  labs(title = "Rating in each State for Patients 18 or Older under Medicaid on Whether They Receieved the Care They Needed", caption = "")
+  labs(x = "State", y = "Average State Rating", title = "Average Patient Satisfaction Ratings by State on 4-Point Scale", caption = "Average State Rating measured on a 4-point scale of 1 being Never to 4 being Always")
 ```
-**put highest lowest and average at 50**
 
-The visual above shows overall state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of "Never" to "Always". The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Using this we can go on to further analyze if states that are more democratic on the democratic index have higher or lower ratings regarding experience of care through Medicaid. 
-
-
-## Research Proposal
-
-I have chosen two data sets, each ranking specific characteristics of states within the US. The first data set, health_quality looks at how specific state health care programs for low income families qualitatively performs compared to other states. The data on quality of health care delivered by each state is drawn from ratings of Medicaid and the Children's Health Insurance Program (CHIP). I plan to combine this information with my second dataset, the state_dem_inx which measures the State Democracy Index from 2000 to 2023. This data looks into each states democratic performance quantitatively. I will be using the democracy_mcmc scores, to determined the average Electoral Democracy Scores over the years the study was conducted. Using these two data sets I aim to determine whether a states democratic performance is a determinant in healthcare quality.Therefore, my explanatory variable will be the Electoral Democracy Score value of each state, as this is what I believe may influence healthcare quality. Therefore, my outcome variable will be the average publicly funded healthcare quality rating of each state. To determine whether or not my hypothesis is correct, I will have to find the most relevant average publicly funded healthcare ratings for each state and compare it to the average state democracy index values (Electoral Democracy Scores) for each state. If states with lower index values tend to have lower healthcare quality ratings, this would affirm my hypothesis. If however, states with lower democratic index have higher healthcare ratings on average, this would disprove my theory. 
+The visual above shows average state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of "Never" to "Always". The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Based on the graph, the state with the highest average satisfaction rating is Mississippi, and the state with the lowest available score is New York. The average state rating appears to be around 50. Using this we can go on to further analyze if states that have higher democratic index values have higher or lower ratings regarding experience of care through Medicaid. 
 
 ##  Results
-
-
-
-
 ```{r, include = FALSE}
 combined_df <- left_join(clean_healthcare_df, state_dem_ind, by = "State")
 ```
+### Scatterplot
 ```{r, echo = FALSE}
 ggplot(data = combined_df,
        mapping = aes(x = mean_democracy_score,
                      y = `State Rate`)) +
   geom_point() +
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm") +
+  labs(x = "Mean State Democracy Index Score", y = "Average State Rating", title = "Comparison of Mean SDI Score to State Ratings")
 ```
-
-
-
+### Linear Regression
 ```{r, echo = FALSE}
-combined_df_lm <- lm(`State Rate` ~ mean_democracy_score, data = combined_df) 
+combined_df_lm <- lm(`State Rate` ~ mean_democracy_score, data = combined_df)
 
-summary <- combined_df_lm |>
-  summary()
+s <- summary(combined_df_lm)
 
-coef(summary) |>
-    knitr::kable(digits = 2)
+coef_df <- as.data.frame(s$coefficients)
+
+colnames(coef_df) <- c(
+  "Estimate",
+  "Standard Error",
+  "t-value",
+  "p-value"
+)
+
+rownames(coef_df) <- c("Intercept", "Mean Democracy Score")
+
+knitr::kable(coef_df, digits = 2)
 ```
 
 The data used in this linear regression was a combined data set, containing the State Rankings of quality of care (more specifically whether patients received the treatment they felt they needed on a four-point scale from "Always" to "Never") from patients above the age of 18 under Medicaid, and data on the mean Electoral Democracy Scores for each state extracted from the State Democracy Index study. Through a linear regression, I aim to understand whether the level of electoral democracy were correlated with higher approval ratings for public healthcare recipients. Based on the table above, there seems to be a negative association between ratings for health care provided to adults through Medicaid and the mean Electoral Democracy Scores. For every point increase in electoral democracy scores (moving 1 point towards a healthier democracy), the approval ratings for patients above the age of 18 under Medicaid go down by 4.25. The intercept value indicates that when the mean score of Electoral Democracy is 0 meaning it is not considered a health or unhealthy democracy, that approval ratings were 52.16. 
