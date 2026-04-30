@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["healthcare_quality.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","SDI_2.0.numbers","State_Dem_Index.csv"]}
+  {"type":"character","attributes":{},"value":["healthcare_quality.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/figure-html5/unnamed-chunk-7-1.png","index_files/figure-html5/unnamed-chunk-9-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","SDI_2.0.numbers","State_Dem_Index.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1551,6 +1551,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 </div>
 <h2 id="project-thoughts">Project thoughts</h2>
+<p><strong>null hypothesis is there is no relationship between state democratic rating and state rates (this has been disproved by the regression test)</strong></p>
 <p>I am interested in exploring data related to how socioeconomic trends and whether a state is typically red or blue impacts the quality and satisfaction patients have with their healthcare. Leadership and public opinion heavily influence the healthcare policy enforced in each state especially when it comes to public health and medicaid/medicare coverage. Is there a correlation between the type of demographic each state has, the party governors and other politicians identify with, and specific economic factors that determine quality of healthcare?</p>
 <h2 id="data">Data</h2>
 <div class="layout-chunk" data-layout="l-body">
@@ -1612,7 +1613,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>         <span class='va'>`Reporting Program`</span> <span class='op'>!=</span> <span class='st'>"Child Core Set"</span>, </span>
 <span>         <span class='va'>`Rate Definition`</span> <span class='op'>==</span> <span class='st'>"Percentage who Selected They \"Always\" Got Needed Care, on a Four-Point Scale Ranging from \"Never\" to \"Always\": Age 18 and Older"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"State"</span>, <span class='st'>"Domain"</span>, <span class='st'>"Measure Name"</span>,  <span class='st'>"Population"</span>, <span class='st'>"Rate Definition"</span>, <span class='st'>"State Rate"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`State Rate` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`State Rate` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>`State Rate`</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
@@ -1621,12 +1623,43 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <pre><code>Rows: 47
 Columns: 6
-$ State             &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arkansas&quot;, &quot;Californ…
+$ State             &lt;chr&gt; &quot;New York&quot;, &quot;California&quot;, &quot;Washington&quot;, &quot;P…
 $ Domain            &lt;chr&gt; &quot;Experience of Care&quot;, &quot;Experience of Care&quot;…
 $ `Measure Name`    &lt;chr&gt; &quot;CAHPS Health Plan Survey 5.1H, Adult Vers…
 $ Population        &lt;chr&gt; &quot;Medicaid&quot;, &quot;Medicaid&quot;, &quot;Medicaid&quot;, &quot;Medic…
 $ `Rate Definition` &lt;chr&gt; &quot;Percentage who Selected They \&quot;Always\&quot; G…
-$ `State Rate`      &lt;dbl&gt; 56.1, 48.1, 53.3, 40.8, 46.5, 48.9, 50.6, …</code></pre>
+$ `State Rate`      &lt;dbl&gt; 39.6, 40.8, 42.4, 43.7, 44.2, 44.8, 46.4, …</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>combined_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>clean_healthcare_df</span>, <span class='va'>state_dem_ind</span>, by <span class='op'>=</span> <span class='st'>"State"</span><span class='op'>)</span></span>
+<span><span class='va'>combined_df</span></span></code></pre>
+</div>
+<pre><code># A tibble: 47 × 7
+   State         Domain    `Measure Name` Population `Rate Definition`
+   &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;            
+ 1 New York      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 2 California    Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 3 Washington    Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 4 Puerto Rico   Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 5 Vermont       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 6 Oregon        Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 7 Nevada        Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 8 Colorado      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+ 9 Dist. of Col. Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+10 New Mexico    Experien… CAHPS Health … Medicaid   &quot;Percentage who …
+# ℹ 37 more rows
+# ℹ 2 more variables: `State Rate` &lt;dbl&gt;, mean_democracy_score &lt;dbl&gt;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>combined_df</span>,</span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>mean_democracy_score</span>,</span>
+<span>                     y <span class='op'>=</span> <span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" alt="" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1636,68 +1669,70 @@ $ `State Rate`      &lt;dbl&gt; 56.1, 48.1, 53.3, 40.8, 46.5, 48.9, 50.6, …</c
 <span></span>
 <span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>clean_healthcare_df</span>, </span>
-<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>State</span>, </span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>State</span>,<span class='va'>`State Rate`</span>, <span class='va'>mean</span>, decreasing <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, </span>
 <span>                     y <span class='op'>=</span> <span class='va'>`State Rate`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>       <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>Group</span>, scales <span class='op'>=</span> <span class='st'>"free_x"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='co'># facet_wrap(~Group, scales = "free_x") +</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>50</span>, hjust <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Rating in each State for Patients 18 or Older under Medicaid on Whether They Receieved the Care They Needed"</span>, caption <span class='op'>=</span> <span class='st'>"Groups are split alphabetically: Group 1 contains the State Ratings for States A-M, and Group 2 contains States N-W."</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Rating in each State for Patients 18 or Older under Medicaid on Whether They Receieved the Care They Needed"</span>, caption <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-7-1.png" alt="" width="624" /></p>
 </div>
+<p><strong>put highest lowest and average at 50</strong></p>
 <p>The visual above shows overall state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of “Never” to “Always”. The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Using this we can go on to further analyze if states that are more democratic on the democratic index have higher or lower ratings regarding experience of care through Medicaid.</p>
-<h3 id="may-change-the-graphs-to-be-from-least-to-most-votes">May change the graphs to be from least to most votes</h3>
-<h2 id="linear-regression-milestone-4">Linear Regression (Milestone 4)</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>combined_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>clean_healthcare_df</span>, <span class='va'>state_dem_ind</span>, by <span class='op'>=</span> <span class='st'>"State"</span><span class='op'>)</span></span>
-<span><span class='va'>combined_df</span></span></code></pre>
-</div>
-<pre><code># A tibble: 47 × 8
-   State         Domain    `Measure Name` Population `Rate Definition`
-   &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;            
- 1 Alabama       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 2 Alaska        Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 3 Arkansas      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 4 California    Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 5 Colorado      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 6 Connecticut   Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 7 Delaware      Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 8 Dist. of Col. Experien… CAHPS Health … Medicaid   &quot;Percentage who …
- 9 Florida       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
-10 Georgia       Experien… CAHPS Health … Medicaid   &quot;Percentage who …
-# ℹ 37 more rows
-# ℹ 3 more variables: `State Rate` &lt;dbl&gt;, Group &lt;chr&gt;,
-#   mean_democracy_score &lt;dbl&gt;</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>combined_df_lm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>`State Rate`</span> <span class='op'>~</span> <span class='va'>mean_democracy_score</span>, data <span class='op'>=</span> <span class='va'>combined_df</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'>broom</span><span class='fu'>::</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>estimate</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
-<span>  </span>
-<span><span class='va'>combined_df_lm</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>combined_df_lm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>`State Rate`</span> <span class='op'>~</span> <span class='va'>mean_democracy_score</span>, data <span class='op'>=</span> <span class='va'>combined_df</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='va'>summary</span> <span class='op'>&lt;-</span> <span class='va'>combined_df_lm</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span><span class='op'>(</span><span class='va'>summary</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span></code></pre>
 </div>
 <table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 13%" />
+<col style="width: 16%" />
+<col style="width: 11%" />
+<col style="width: 27%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">t value</th>
+<th style="text-align: right;">Pr(&gt;|t|)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">52.16</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">79.48</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">mean_democracy_score</td>
 <td style="text-align: right;">-4.25</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">-5.15</td>
+<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>The data used in this linear regression was a combined data set, containing the State Rankings of quality of care (more specifically whether patients received the treatment they felt they needed on a four-point scale from “Always” to “Never”) from patients above the age of 18 under Medicaid, and data on the mean Electoral Democracy Scores for each state extracted from the State Democracy Index study. Through a linear regression, I aim to understand whether the level of electoral democracy were correlated with higher approval ratings for public healthcare recipients. Based on the table above, there seems to be a negative association between ratings for health care provided to adults through Medicaid and the mean Electoral Democracy Scores. For every point increase in electoral democracy scores (moving 1 point towards a healthier democracy), the approval ratings for patients above the age of 18 under Medicaid go down by 4.25. The intercept value indicates that when the mean score of Electoral Democracy is 0 meaning it is not considered a health or unhealthy democracy, that approval ratings were 52.16.</p>
 <p>Based on this information, I believe that the association between the quality of publicly funded healthcare scores, and electoral democracy scores disprove my hypothesis that states with healthier democracies will have higher approval ratings for publicly funded medical programs.</p>
+<ul>
+<li>Think about causality (consider measuring potential confounders)
+include in project analysis</li>
+<li>Include visualization comparing state to SDI rating</li>
+<li>scatterplot(geom_point) x-axis (democracy score) y axis (state rate) + geom_smooth(for relationship)</li>
+</ul>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

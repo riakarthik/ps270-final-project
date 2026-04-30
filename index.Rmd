@@ -16,6 +16,9 @@ library(broom)
 
 ## Project thoughts
 
+
+**null hypothesis is there is no relationship between state democratic rating and state rates (this has been disproved by the regression test)**
+
 I am interested in exploring data related to how socioeconomic trends and whether a state is typically red or blue impacts the quality and satisfaction patients have with their healthcare. Leadership and public opinion heavily influence the healthcare policy enforced in each state especially when it comes to public health and medicaid/medicare coverage. Is there a correlation between the type of demographic each state has, the party governors and other politicians identify with, and specific economic factors that determine quality of healthcare?
 
 
@@ -47,13 +50,28 @@ clean_healthcare_df <- healthcare_quality |>
          `Reporting Program` != "Child Core Set", 
          `Rate Definition` == "Percentage who Selected They \"Always\" Got Needed Care, on a Four-Point Scale Ranging from \"Never\" to \"Always\": Age 18 and Older") |>
   select(c("State", "Domain", "Measure Name",  "Population", "Rate Definition", "State Rate")) |>
-  mutate(`State Rate` = suppressWarnings( as.numeric(`State Rate`)))
+  mutate(`State Rate` = suppressWarnings( as.numeric(`State Rate`))) |>
+  arrange(`State Rate`)
 
 ```
 
 ```{r}
 glimpse(clean_healthcare_df)
 ```
+
+
+```{r}
+combined_df <- left_join(clean_healthcare_df, state_dem_ind, by = "State")
+combined_df
+```
+```{r}
+ggplot(data = combined_df,
+       mapping = aes(x = mean_democracy_score,
+                     y = `State Rate`)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
 
 ```{r warning = FALSE}
 clean_healthcare_df <- clean_healthcare_df |>
@@ -62,33 +80,36 @@ clean_healthcare_df <- clean_healthcare_df |>
 
 
 ggplot(data = clean_healthcare_df, 
-       mapping = aes(x = State, 
+       mapping = aes(x = reorder(State,`State Rate`, mean, decreasing = TRUE), 
                      y = `State Rate`)) +
        geom_col() + 
-  facet_wrap(~Group, scales = "free_x") +
+  # facet_wrap(~Group, scales = "free_x") +
   theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
-  labs(title = "Rating in each State for Patients 18 or Older under Medicaid on Whether They Receieved the Care They Needed", caption = "Groups are split alphabetically: Group 1 contains the State Ratings for States A-M, and Group 2 contains States N-W.")
+  labs(title = "Rating in each State for Patients 18 or Older under Medicaid on Whether They Receieved the Care They Needed", caption = "")
 ```
+**put highest lowest and average at 50**
 
 The visual above shows overall state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale of "Never" to "Always". The purpose of this graph is to get a general idea of which states tend to make patients feel satisfied with the amount and quality of care they have available through Medicaid. Using this we can go on to further analyze if states that are more democratic on the democratic index have higher or lower ratings regarding experience of care through Medicaid. 
 
-### May change the graphs to be from least to most votes 
 
-## Linear Regression (Milestone 4)
 
 ```{r}
-combined_df <- left_join(clean_healthcare_df, state_dem_ind, by = "State")
-combined_df
+combined_df_lm <- lm(`State Rate` ~ mean_democracy_score, data = combined_df) 
 
-combined_df_lm <- lm(`State Rate` ~ mean_democracy_score, data = combined_df) |>
-  broom::tidy() |>
-  select(term, estimate) |>
-  knitr::kable(digits = 2)
-  
-combined_df_lm
+summary <- combined_df_lm |>
+  summary()
+
+coef(summary) |>
+    knitr::kable(digits = 2)
 ```
 
 The data used in this linear regression was a combined data set, containing the State Rankings of quality of care (more specifically whether patients received the treatment they felt they needed on a four-point scale from "Always" to "Never") from patients above the age of 18 under Medicaid, and data on the mean Electoral Democracy Scores for each state extracted from the State Democracy Index study. Through a linear regression, I aim to understand whether the level of electoral democracy were correlated with higher approval ratings for public healthcare recipients. Based on the table above, there seems to be a negative association between ratings for health care provided to adults through Medicaid and the mean Electoral Democracy Scores. For every point increase in electoral democracy scores (moving 1 point towards a healthier democracy), the approval ratings for patients above the age of 18 under Medicaid go down by 4.25. The intercept value indicates that when the mean score of Electoral Democracy is 0 meaning it is not considered a health or unhealthy democracy, that approval ratings were 52.16. 
 
 Based on this information, I believe that the association between the quality of publicly funded healthcare scores, and electoral democracy scores disprove my hypothesis that states with healthier democracies will have higher approval ratings for publicly funded medical programs. 
+
+
+- Think about causality (consider measuring potential confounders)
+include in project analysis 
+- Include visualization comparing state to SDI rating 
+- scatterplot(geom_point) x-axis (democracy score) y axis (state rate) + geom_smooth(for relationship)
 
