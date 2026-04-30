@@ -73,7 +73,7 @@ ggplot(data = clean_healthcare_df,
 The visual above shows average state rating on experience of care for patients 18 or older under Medicaid. The rating is based on the on whether or not patients felt they had received the care they needed on a 4 point scale (1 being "Never" to 4 being "Always"). The purpose of this graph is to get a general idea of which states tend to make patients feel more satisfied with the amount and quality of care they receive through Medicaid. Based on the graph, the state with the highest average satisfaction rating is Mississippi, and the state with the lowest available score is New York. The average state rating appears to be around 50. Using this we can further analyze if states that have higher democratic index values tend have higher or lower ratings of Medicaid. 
 
 ##  Results
-```{r, include = FALSE}
+```{r, echo = FALSE}
 combined_df <- left_join(clean_healthcare_df, state_dem_ind, by = "State")
 ```
 ### Scatterplot
