@@ -39,6 +39,7 @@ state_dem_ind <- read_csv("State_Dem_Index.csv") |>
 
 state_dem_ind
 ```
+
 ```{r, echo = FALSE}
 clean_healthcare_df <- healthcare_quality |>
   filter(Population == "Medicaid", 
@@ -57,9 +58,7 @@ glimpse(clean_healthcare_df)
 
 ```{r, echo = FALSE}
 clean_healthcare_df <- clean_healthcare_df |>
-  arrange(State) |>
-  mutate(Group = if_else(row_number() <= n()/2, "Group 1", "Group 2")) 
-
+  arrange(State) 
 
 ggplot(data = clean_healthcare_df, 
        mapping = aes(x = reorder(State,`State Rate`, mean, decreasing = TRUE), 
